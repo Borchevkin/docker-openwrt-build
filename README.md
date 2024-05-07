@@ -26,31 +26,105 @@ Officialy supperts the following versions:
 
 ## Build and run
 
-### Build and run by Dockerfile
+For your convinience may be used several approaches for run a container with image
+
+### Build and run - Dockerfile
+
+This approach assume that you want to build image locally from Dockerfile using the following commands:
 
 ```bash
 # Build in detached mode
-$ docker build -t docker-openwrt-build .
+docker build -t --name docker-openwrt-build .
 
 # Run in interactive mode
-$ docker run -it docker-openwrt-build
+docker run -it --name openwrt-build_container docker-openwrt-build
 ```
 
-## Usage by DockerHub
+### Build and run - DockerHub
 
-TBD
+This approach assume that you can get actual image through Docker Hub using the following commands:
+
+```bash
+# Pull the image wit desired version
+docker image pull borchevkin/openwrt-build:1.0.0
+
+# Run the image in interactive mode
+docker run -it --name openwrt-build_container borchevkin/openwrt-build:1.0.0
+```
+
+## OpenWRT retention
+
+When using this docker image for build sometimes (actually always for speed up builds) will be better to mount folder and clone and build OpenWRT on your host machine. 
+
+For this you can use several approaches.
+
+### OpenWRT retention - Docker Compose
+
+As example, you can create ```docker-compose.yml``` with the similar configuration:
+
+```yml
+version: "3.9"
+services:
+  builder:
+    build: .
+    volumes:
+      - type: bind
+        source: ./
+        target: /host
+      - type: bind
+        source: ~/.ssh
+        target: /root/.ssh
+    working_dir: /host
+    tty: true
+```
+
+You can run composer with the following command:
+
+```bash
+docker compose up
+```
+
+### OpenWRT retention - Run the docker container with options
+
+As example, run a container with the following options:
+
+```bash
+docker run -v "$HOME/.ssh":/root/.ssh -v "$PWD":/host -w /host -d -i -t --name openwrt-build_container docker-openwrt-build
+```
 
 ## FAQ
 
-### How to change version of used gcc or g++
+### FAQ - How to detach from running container without stop it
+
+Press on keyboard sequentally ```Ctrl+P Ctrl+Q```.
+
+### FAQ - How to change version of used gcc or g++
 
 ```bash
+# Or
 update-alternatives --set g++ /usr/bin/g++-9
 update-alternatives --set gcc /usr/bin/gcc-9
 
+# Or
 update-alternatives --set g++ /usr/bin/g++-10
 update-alternatives --set gcc /usr/bin/gcc-10
 
+# Or
 update-alternatives --set g++ /usr/bin/g++-11
 update-alternatives --set gcc /usr/bin/gcc-11
+```
+
+### FAQ - python not found
+
+Use the following:
+
+```bash
+python3 -v
+python2.7 -v
+```
+
+### FAQ - Cannot ls a host dir inside Docker container (RHEL-based)
+
+```bash
+sudo su -c "setenforce 0"
 ```

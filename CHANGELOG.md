@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Dockerfile: Different versions of `g++` - 9, 10, 11.
 
+* Dockerfile: Different versions of `python` - 3, 2.7.
+
 * Dockerfile: support for Lua dev environment.
 
 * Dockerfile: support for C dev environment.
@@ -53,6 +55,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Dockerfile: Change default gcc to 9.x.x.
+* Dockerfile: Change default `gcc` to 9.x.x.
 
-* Dockerfile: Change default g++ to 9.x.x.
+* Dockerfile: Change default `g++` to 9.x.x.
