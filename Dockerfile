@@ -154,7 +154,6 @@ RUN \
     update-alternatives --set gcc /usr/bin/gcc-9 && \
     # Set g++ to 9.x.x
     update-alternatives --set g++ /usr/bin/g++-9
-
 RUN \
     # Libubox
     git clone --branch master https://github.com/openwrt/libubox && \
