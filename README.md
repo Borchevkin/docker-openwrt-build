@@ -34,7 +34,7 @@ This approach assume that you want to build image locally from Dockerfile using 
 
 ```bash
 # Build in detached mode
-docker build -t --name docker-openwrt-build .
+docker build -t docker-openwrt-build .
 
 # Run in interactive mode
 docker run -it --name openwrt-build_container docker-openwrt-build
@@ -84,12 +84,12 @@ You can run composer with the following command:
 docker compose up
 ```
 
-### OpenWRT retention - Run the docker container with options
+### OpenWRT retention - Run the docker container with options and SSH support
 
 As example, run a container with the following options:
 
 ```bash
-docker run -v "$HOME/.ssh":/root/.ssh -v "$PWD":/host -w /host -d -i -t --name openwrt-build_container docker-openwrt-build
+docker run -v ~/.ssh/id_rsa:/root/.ssh/id_rsa -v ~/.ssh/known_hosts:/root/.ssh/known_hosts -v "$PWD":/host -w /host -d -i -t --name docker-openwrt-build_container docker-openwrt-build
 ```
 
 ## FAQ
@@ -127,4 +127,22 @@ python2.7 -v
 
 ```bash
 sudo su -c "setenforce 0"
+```
+
+## For maintaners
+
+### For maintainers - push new version to Docker Hub
+
+```bash
+# Create access token and login into docker from CLI
+docker login -u <your username>
+
+# Build image
+docker build -t docker-openwrt-build .
+
+# Tag the image 
+docker image tag docker-openwrt-build borchevkin/openwrt-build:latest
+
+# Push the image
+docker image push borchevkin/openwrt-build:latest
 ```
