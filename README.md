@@ -131,13 +131,18 @@ sudo su -c "setenforce 0"
 
 ## For maintaners
 
-### For maintainers - push new version to Docker hub
-rm 
+### For maintainers - push new version to Docker Hub
+
 ```bash
-# Get container ID and commit it
-docker container ls
+# Create access token and login into docker from CLI
+docker login -u <your username>
 
-docker container commit 5d1aec6c387d openwrt-build:latest
+# Build image
+docker build -t docker-openwrt-build .
 
+# Tag the image 
+docker image tag docker-openwrt-build borchevkin/openwrt-build:latest
 
+# Push the image
+docker image push borchevkin/openwrt-build:latest
 ```
